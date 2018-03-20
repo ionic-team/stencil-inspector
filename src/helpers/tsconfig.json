@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../www",
+    "inlineSourceMap": true,
+    "inlineSources": true
+  },
+  "include": [],
+  "files": [
+    "background-script.ts",
+    "checker.ts",
+    "content-script.ts",
+    "declarations.ts",
+    "scout.ts"
+  ]
+}

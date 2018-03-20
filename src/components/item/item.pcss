@@ -1,0 +1,58 @@
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  box-sizing: border-box;
+  flex-flow: column;
+  padding: 0 4px;
+
+  & .item {
+    display: flex;
+    flex: 1;
+    padding: 3px 0;
+    box-sizing: border-box;
+    white-space: nowrap;
+
+    & .name {
+      display: flex;
+      font-size: 12px;
+      color: rgb(128, 0, 128);
+      font-family: monospace;
+      margin: 0 4px 0 1px;
+      box-sizing: border-box;
+      padding-left: 16px;
+      align-self: center;
+
+      &:after {
+        content: ':';
+        font-size: 12px;
+        color: rgb(105, 105, 105);
+        font-family: monospace;
+      }
+
+      &.print {
+        display: none;
+      }
+    }
+
+    & .arrow + .name {
+      padding-left: 0;
+    }
+  }
+
+  & .children {
+    flex: 1;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+    padding-left: 5px;
+  }
+}
+
+:host(.dark) {
+  & .item {
+    & .name {
+      color: rgb(52, 199, 187);
+    }
+  }
+}

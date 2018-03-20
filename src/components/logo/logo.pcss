@@ -1,0 +1,31 @@
+:host {
+  display: flex;
+  flex: 1;
+  background: rgb(244, 244, 244);
+  padding: 5px 0;
+  box-sizing: border-box;
+  color: rgb(22, 22, 29);
+  min-width: 100%;
+  justify-content: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+
+  & .logo {
+    display: flex;
+    height: 25px;
+    vertical-align: text-top;
+  }
+
+  & .badge {
+    display: flex;
+    font-weight: 800;
+    font-size: 12px;
+    vertical-align: super;
+    letter-spacing: -1px;
+  }
+}
+
+:host(.dark) {
+  background: rgb(42, 42, 42);
+  color: rgb(244, 244, 244);
+  border-bottom-color: rgb(61, 61, 61);
+}

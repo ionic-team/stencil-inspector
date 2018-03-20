@@ -1,0 +1,52 @@
+{
+  "manifest_version": 2,
+  "name": "Stencil Inspector",
+  "version": "0.0.1",
+  "minimum_chrome_version": "50",
+  "description": "A minimal Chrome extension for debugging web components built with Stencil",
+  "content_security_policy": "script-src 'self' 'sha256-jcFAU1aKNjTquPpG7ZAFni1L+Q5BhoTMs3jiVglJ/+U=' 'unsafe-eval'; object-src 'self'",
+  "background": {
+    "scripts": [
+      "helpers/background-script.js"
+    ]
+  },
+  "devtools_page": "devtools.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "helpers/content-script.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    "helpers/background-script.js.map",
+    "helpers/checker.js",
+    "helpers/checker.js.map",
+    "helpers/content-script.js.map",
+    "helpers/scout.js",
+    "helpers/scout.js.map"
+  ],
+  "icons": {
+    "16": "images/stencil-logo-16x16.png",
+    "48": "images/stencil-logo-48x48.png",
+    "128": "images/stencil-logo-128x128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "images/stencil-logo-disabled-16x16.png",
+      "48": "images/stencil-logo-disabled-48x48.png",
+      "128": "images/stencil-logo-disabled-128x128.png"
+    },
+    "default_title": "Stencil Inspector",
+    "default_popup": "popups/disabled.html"
+  },
+  "permissions": [
+    "http://*/*",
+    "https://*/*",
+    "tabs"
+  ]
+}

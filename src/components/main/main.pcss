@@ -1,0 +1,42 @@
+:host {
+  display: flex;
+  box-sizing: border-box;
+  flex-flow: column;
+  min-width: 100%;
+  width: fit-content;
+
+  & .menu {
+    display: flex;
+    flex: 1;
+    font-weight: 400;
+    font-size: 12px;
+    margin: 0;
+    padding: 8px 14px 8px 4px;
+    box-sizing: border-box;
+    background: rgb(244, 244, 244);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    justify-content: flex-end;
+  }
+
+  & .message,
+  & .category {
+    flex: 1;
+    box-sizing: border-box;
+    width: fit-content;
+    min-width: 100%;
+  }
+
+  & .message {
+    text-align: center;
+  }
+}
+
+:host(.dark) {
+  background-color: rgb(27, 27, 27);
+
+  & .menu {
+    color: rgb(152, 152, 152);
+    background: rgb(36, 36, 36);
+    border-bottom-color: rgb(61, 61, 61);
+  }
+}

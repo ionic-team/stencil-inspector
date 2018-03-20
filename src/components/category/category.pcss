@@ -1,0 +1,46 @@
+:host {
+  display: flex;
+  flex: 1;
+  flex-flow: column;
+  box-sizing: border-box;
+  min-width: 100%;
+
+  & .header {
+    display: flex;
+    flex: 1;
+    font-weight: 400;
+    font-size: 11px;
+    margin: 0;
+    padding: 4px;
+    box-sizing: border-box;
+    background: rgb(244, 244, 244);
+    border-bottom: 0 solid rgba(0, 0, 0, 0.25);
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+  }
+}
+
+:host(:first-of-type) {
+  & .header {
+    border-top-width: 0;
+  }
+}
+
+:host(:last-of-type),
+:host(.expanded) {
+  & .header {
+    border-bottom-width: 1px;
+  }
+}
+
+:host(.expanded):host(:last-of-type) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+:host(.dark) {
+  & .header {
+    color: rgb(152, 152, 152);
+    background: rgb(36, 36, 36);
+    border-bottom-color: rgb(61, 61, 61);
+    border-top-color: rgb(61, 61, 61);
+  }
+}

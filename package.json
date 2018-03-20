@@ -1,0 +1,52 @@
+{
+  "name": "@stencil/inspector",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "dist/sti.js",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "scripts": {
+    "build": "npm run build.panel && npm run build.bridge",
+    "build.panel": "stencil build",
+    "build.bridge": "tsc -p src/helpers/tsconfig.json",
+    "watch": "sd concurrent \"npm run watch.panel\" && \"npm run build.bridge\"",
+    "watch.panel": "stencil build --watch",
+    "watch.bridge": "tsc -w -p src/helpers/tsconfig.json",
+    "lint": "sd concurrent \"npm run lint.ts\" \"npm run lint.styles\"",
+    "lint.ts": "tslint -p tsconfig.json -c tslint.json",
+    "lint.styles": "stylelint \"src/**/*.pcss\"",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+  },
+  "dependencies": {
+    "@stencil/core": "^0.7.2"
+  },
+  "devDependencies": {
+    "@stencil/postcss": "^0.0.4",
+    "@stencil/utils": "^0.0.4",
+    "@types/chrome": "^0.0.61",
+    "conventional-changelog-cli": "^1.3.16",
+    "postcss": "^6.0.20",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-reporter": "^5.0.0",
+    "postcss-url": "^7.3.1",
+    "stylelint": "^9.1.3",
+    "tslint": "^5.9.1",
+    "tslint-ionic-rules": "^0.0.14",
+    "tslint-language-service": "^0.9.8",
+    "tslint-react": "^3.5.1",
+    "typescript": "^2.7.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ionic-team/stencil-inspector.git"
+  },
+  "author": "Ionic Team",
+  "homepage": "https://stenciljs.com/",
+  "description": "A minimal Chrome extension for debugging web components built with Stencil",
+  "keywords": [
+    "stencil",
+    "chrome",
+    "debug",
+    "plugin"
+  ]
+}

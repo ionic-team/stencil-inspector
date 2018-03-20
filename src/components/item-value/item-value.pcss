@@ -1,0 +1,105 @@
+:host {
+  display: flex;
+  align-self: center;
+  justify-self: stretch;
+  flex: 1;
+  font-size: 12px;
+  color: rgb(105, 105, 105);
+  font-family: monospace;
+  padding: 4px 10px 0 6px;
+
+  & .input {
+    width: 100%;
+    border-radius: 2px;
+    padding: 4px 6px;
+    border: 1px solid rgb(128, 128, 128);
+    outline: none;
+  }
+
+  & .value {
+    &.canEdit {
+      cursor: pointer;
+    }
+
+    &.null,
+    &.undefined {
+      color: rgb(105, 105, 105);
+    }
+
+    &.boolean {
+      color: rgb(255, 20, 147);
+    }
+
+    &.function {
+      color: rgb(255, 0, 0);
+      white-space: nowrap;
+    }
+
+    &.string {
+      color: rgb(255, 0, 0);
+      white-space: nowrap;
+
+      &:before,
+      &:after {
+        content: '"';
+      }
+    }
+
+    &.number {
+      color: rgb(0, 0, 255);
+    }
+
+    &.array {
+      color: rgb(0, 0, 0);
+    }
+
+    &.object,
+    &.node {
+      color: rgb(0, 0, 0);
+    }
+
+    &.node {
+      color: rgb(203, 203, 203);
+    }
+  }
+}
+
+:host(:not(.editMode)) {
+  padding: 0;
+}
+
+:host(.print) {
+  white-space: pre;
+
+  & .value {
+    &.string {
+      white-space: pre;
+
+      &:before,
+      &:after {
+        content: '';
+      }
+    }
+  }
+}
+
+:host(.dark) {
+  & .input {
+    color: rgb(152, 152, 152);
+    background: rgb(36, 36, 36);
+    border-color: rgb(61, 61, 61);
+  }
+
+  & .value {
+    &.function,
+    &.string,
+    &.array,
+    &.object {
+      color: rgb(203, 203, 203);
+    }
+
+    &:host(.number) {
+      color: rgb(89, 166, 202);
+    }
+  }
+}

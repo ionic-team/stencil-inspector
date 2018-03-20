@@ -1,0 +1,128 @@
+defaults: &defaults
+  docker:
+    - image: circleci/node:9.4.0
+  environment:
+    - APP_ID: komnnoelcbjpjfnbhmdpgmlbklmicmdi
+  working_directory: ~/stencil-inspector
+
+build_filters: &build_filters
+  filters:
+    branches:
+      only:
+        - master
+
+version: 2
+jobs:
+  dependencies:
+    <<: *defaults
+    steps:
+      - checkout
+      - save_cache:
+          key: repo-cache-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/stencil-inspector
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Installing npm dependencies
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+
+  lint:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          keys:
+            - repo-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Linting
+          command: npm run lint
+
+#  test:
+#    <<: *defaults
+#    steps:
+#      - restore_cache:
+#          keys:
+#            - repo-cache-{{ .Environment.CIRCLE_SHA1 }}
+#      - restore_cache:
+#          keys:
+#            - dependency-cache-{{ checksum "package.json" }}
+#      - run:
+#          name: Testing
+#          command: npm run test
+
+  build:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          keys:
+            - repo-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Creating Build
+          command: npm run build
+          environment:
+              - NODE_ENV: production
+      - run:
+          name: Archive
+          command: zip -r stencil-inspector.zip ~/stencil-inspector/www
+      - save_cache:
+          key: build-cache-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - stencil-inspector.zip
+
+  deploy:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          keys:
+            - repo-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - build-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Updating OS dependencies
+          command: sudo apt update
+      - run:
+          name: Installing curl
+          command: sudo apt install curl
+      - run:
+          name: Installing jq
+          command: sudo apt install jq
+      - run:
+          name: Deploy
+          command: |
+            ACCESS_TOKEN=$(curl "https://accounts.google.com/o/oauth2/token" -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&refresh_token=${REFRESH_TOKEN}&grant_type=refresh_token&redirect_uri=urn:ietf:wg:oauth:2.0:oob" | jq -r .access_token)
+            curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T stencil-inspector.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID}"
+            curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -H "Content-Length: 0" -X POST -v "https://www.googleapis.com/chromewebstore/v1.1/items/${APP_ID}/publish"
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - dependencies
+      - lint:
+          requires:
+            - dependencies
+#      - test:
+#          requires:
+#            - dependencies
+      - build:
+          <<: *build_filters
+          requires:
+            - dependencies
+      - deploy:
+          <<: *build_filters
+          requires:
+            - lint
+#            - test
+            - build
